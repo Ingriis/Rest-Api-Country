@@ -1,0 +1,71 @@
+<div class="app">
+
+  <header>
+    <div class="logo">
+      <span class="emoji">🌍</span>
+      <h1>Country<span>Finder</span></h1>
+    </div>
+
+    <div class="search-box">
+      <input 
+        #pais 
+        type="text" 
+        placeholder="Busca un país (ej: Japan)..." 
+        (keydown.enter)="buscarPais(pais.value)">
+      
+      <button (click)="buscarPais(pais.value)">
+        Explorar
+      </button>
+    </div>
+  </header>
+
+  <main>
+
+    <div class="card-panel" *ngIf="country; else placeholder">
+      <h2>{{ country.name.common }}</h2>
+      <p class="official-name">{{ country.name.official }}</p>
+
+      <img [src]="country.flags.svg" class="flag-img">
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Capital</label>
+          <div>{{ country.capital?.[0] || 'N/A' }}</div>
+        </div>
+
+        <div class="info-item">
+          <label>Población</label>
+          <div>{{ country.population | number }}</div>
+        </div>
+
+        <div class="info-item">
+          <label>Región</label>
+          <div>{{ country.region }}</div>
+        </div>
+
+        <div class="info-item">
+          <label>Moneda</label>
+          <div>{{ currencyName }}</div>
+        </div>
+      </div>
+    </div>
+
+    <ng-template #placeholder>
+      <div class="card-panel">
+        <div class="placeholder-text">
+          Ingresa un nombre para comenzar la aventura
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="json-panel" *ngIf="jsonData">
+      <div class="panel-header">
+        <h3>Raw Data Object</h3>
+        <span class="status-dot"></span>
+      </div>
+      <pre>{{ jsonData | json }}</pre>
+    </div>
+
+  </main>
+
+</div>
