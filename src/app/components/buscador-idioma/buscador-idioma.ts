@@ -11,29 +11,36 @@ import { CountryService } from '../../services/country';
 })
 export class SearchLanguage {
   countries: any[] = [];
-  jsonData: any = null;
-  errorMessage = '';
+  selectedCountry: any = null; 
 
   constructor(private countryService: CountryService) {}
 
   buscarPorIdioma(idioma: string) {
-    if (!idioma.trim()) return;
-    
-    this.errorMessage = '';
-    this.jsonData = null;
-    
-    this.countryService.getCountriesByLanguage(idioma.toLowerCase())
+    if (!idioma) return;
+
+    this.countryService.getCountriesByLanguage(idioma)
       .subscribe({
         next: (data: any) => {
           this.countries = data;
-          this.jsonData = data;
+          this.selectedCountry = data[0] || null;
         },
-        error: (err) => {
+        error: (error) => {
+          console.error('Error:', error);
           this.countries = [];
-          this.jsonData = null;
-          this.errorMessage = 'No se encontraron países para ese idioma';
-          console.error('Error:', err);
+          this.selectedCountry = null;
         }
       });
+  }
+
+  selectCountry(country: any) {
+    this.selectedCountry = country;
+  }
+
+  getCurrencyName(country: any): string {
+    if (country?.currencies) {
+      const currency = Object.values(country.currencies)[0] as any;
+      return currency?.name || 'N/A';
+    }
+    return 'N/A';
   }
 }

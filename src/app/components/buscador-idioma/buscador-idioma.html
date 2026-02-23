@@ -9,40 +9,77 @@
       <input 
         #idioma
         type="text" 
-        placeholder="Idioma (ej: spanish, es, english, fr)..."
+        placeholder="Idioma (ej: spanish, es, english)..."
         (keydown.enter)="buscarPorIdioma(idioma.value)">
+      
       <button (click)="buscarPorIdioma(idioma.value)">
-        Buscar
+        Explorar
       </button>
     </div>
   </header>
 
   <main>
-    <!-- Lista de países -->
-    <div class="results-grid" *ngIf="countries.length > 0">
-      <div class="country-card" *ngFor="let country of countries">
-        <img [src]="country.flags.svg" class="small-flag">
-        <div class="country-info">
-          <h3>{{ country.name.common }}</h3>
-          <p>Capital: {{ country.capital?.[0] || 'N/A' }}</p>
-          <p>Población: {{ country.population | number }}</p>
+    
+    <div class="card-panel" *ngIf="countries.length > 0; else placeholder">
+      <div 
+        *ngFor="let country of countries; let i = index" 
+        class="country-item"
+        [class.selected]="selectedCountry === country"
+        (click)="selectCountry(country)">
+        
+        <h2>{{ country.name.common }}</h2>
+        <p class="official-name">{{ country.name.official }}</p>
+
+        <img [src]="country.flags.svg" class="flag-img" *ngIf="country.flags?.svg">
+
+        <div class="info-grid">
+          <div class="info-item">
+            <label>CAPITAL</label>
+            <div>{{ country.capital?.[0] || 'N/A' }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>POBLACIÓN</label>
+            <div>{{ country.population | number }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>REGIÓN</label>
+            <div>{{ country.region }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>MONEDA</label>
+            <div>{{ getCurrencyName(country) }}</div>
+          </div>
+        </div>
+
+        <hr *ngIf="i < countries.length - 1">
+      </div>
+    </div>
+
+    <ng-template #placeholder>
+      <div class="card-panel">
+        <div class="placeholder-text">
+          Ingresa un idioma para buscar países
         </div>
       </div>
-    </div>
+    </ng-template>
 
-    <!-- Placeholder -->
-    <div class="card-panel" *ngIf="countries.length === 0">
-      <div class="placeholder-text">
-        {{ errorMessage || 'Busca países por idioma' }}
-      </div>
-    </div>
-
-    <!-- Panel JSON (opcional) -->
-    <div class="json-panel" *ngIf="jsonData">
+    <div class="json-panel" *ngIf="selectedCountry">
       <div class="panel-header">
-        <h3>Raw Data</h3>
+        <h3>Raw Data Object - {{ selectedCountry.name.common }}</h3>
+        <span class="status-dot"></span>
       </div>
-      <pre>{{ jsonData | json }}</pre>
+      <pre>{{ selectedCountry | json }}</pre>
+    </div>
+
+    <div class="json-panel" *ngIf="countries.length > 0 && !selectedCountry">
+      <div class="panel-header">
+        <h3>Raw Data Object</h3>
+        <span class="status-dot"></span>
+      </div>
+      <pre>Selecciona un país para ver sus datos</pre>
     </div>
   </main>
 </div>

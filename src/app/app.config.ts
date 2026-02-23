@@ -5,7 +5,7 @@ import { routes } from './app.routes';
 
 export const appConfig: ApplicationConfig = {
   providers: [
-    provideBrowserGlobalErrorListeners(),
-    provideRouter(routes)
+    provideBrowserGlobalErrorListeners(), // Manejo global de errores
+    provideRouter(routes) // Configuración de rutas de la aplicación
   ]
 };
