@@ -1,0 +1,48 @@
+<div class="app">
+  <header>
+    <div class="logo">
+      <span class="emoji">🗣️</span>
+      <h1>Language<span>Finder</span></h1>
+    </div>
+
+    <div class="search-box">
+      <input 
+        #idioma
+        type="text" 
+        placeholder="Idioma (ej: spanish, es, english, fr)..."
+        (keydown.enter)="buscarPorIdioma(idioma.value)">
+      <button (click)="buscarPorIdioma(idioma.value)">
+        Buscar
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Lista de países -->
+    <div class="results-grid" *ngIf="countries.length > 0">
+      <div class="country-card" *ngFor="let country of countries">
+        <img [src]="country.flags.svg" class="small-flag">
+        <div class="country-info">
+          <h3>{{ country.name.common }}</h3>
+          <p>Capital: {{ country.capital?.[0] || 'N/A' }}</p>
+          <p>Población: {{ country.population | number }}</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Placeholder -->
+    <div class="card-panel" *ngIf="countries.length === 0">
+      <div class="placeholder-text">
+        {{ errorMessage || 'Busca países por idioma' }}
+      </div>
+    </div>
+
+    <!-- Panel JSON (opcional) -->
+    <div class="json-panel" *ngIf="jsonData">
+      <div class="panel-header">
+        <h3>Raw Data</h3>
+      </div>
+      <pre>{{ jsonData | json }}</pre>
+    </div>
+  </main>
+</div>

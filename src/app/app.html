@@ -1,5 +1,7 @@
 <nav class="nav">
-  <a routerLink="" routerLinkActive="active">Buscar</a>
+  <a routerLink="/" routerLinkActive="active" [routerLinkActiveOptions]="{exact: true}">
+    Por País</a>
+  <a routerLink="/idioma" routerLinkActive="active">Por Idioma</a>
 </nav>
 
 <router-outlet></router-outlet>
