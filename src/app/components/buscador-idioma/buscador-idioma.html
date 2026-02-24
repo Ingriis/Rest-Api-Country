@@ -1,0 +1,85 @@
+<div class="app">
+  <header>
+    <div class="logo">
+      <span class="emoji">🗣️</span>
+      <h1>Language<span>Finder</span></h1>
+    </div>
+
+    <div class="search-box">
+      <input 
+        #idioma
+        type="text" 
+        placeholder="Idioma (ej: spanish, es, english)..."
+        (keydown.enter)="buscarPorIdioma(idioma.value)">
+      
+      <button (click)="buscarPorIdioma(idioma.value)">
+        Explorar
+      </button>
+    </div>
+  </header>
+
+  <main>
+    
+    <div class="card-panel" *ngIf="countries.length > 0; else placeholder">
+      <div 
+        *ngFor="let country of countries; let i = index" 
+        class="country-item"
+        [class.selected]="selectedCountry === country"
+        (click)="selectCountry(country)">
+        
+        <h2>{{ country.name.common }}</h2>
+        <p class="official-name">{{ country.name.official }}</p>
+
+        <img [src]="country.flags.svg" class="flag-img" *ngIf="country.flags?.svg">
+
+        <div class="info-grid">
+          <div class="info-item">
+            <label>CAPITAL</label>
+            <div>{{ country.capital?.[0] || 'N/A' }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>POBLACIÓN</label>
+            <div>{{ country.population | number }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>REGIÓN</label>
+            <div>{{ country.region }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>MONEDA</label>
+            <div>{{ getCurrencyName(country) }}</div>
+          </div>
+        </div>
+
+        <hr *ngIf="i < countries.length - 1">
+      </div>
+    </div>
+
+    <ng-template #placeholder>
+      <div class="card-panel">
+        <div class="placeholder-text">
+          Ingresa un idioma para buscar países
+        </div>
+      </div>
+    </ng-template>
+
+    <div class="json-panel" *ngIf="selectedCountry">
+      <div class="panel-header">
+        <h3>Raw Data Object - {{ selectedCountry.name.common }}</h3>
+        <span class="status-dot"></span>
+      </div>
+      <pre>{{ selectedCountry | json }}</pre>
+    </div>
+
+    <div class="json-panel" *ngIf="countries.length > 0 && !selectedCountry">
+      <div class="panel-header">
+        <h3>Raw Data Object</h3>
+        <span class="status-dot"></span>
+      </div>
+      <pre>Selecciona un país para ver sus datos</pre>
+    </div>
+  </main>
+</div>
