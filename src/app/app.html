@@ -1,4 +1,5 @@
 <nav class="nav">
+
   <!-- Ruta principal: búsqueda por país -->
   <a routerLink="/" 
      routerLinkActive="active" 
@@ -11,7 +12,13 @@
      routerLinkActive="active">
     Por Idioma
   </a>
+
+  <!-- Ruta para búsqueda por moneda -->
+  <a routerLink="/moneda" 
+     routerLinkActive="active">
+    Por Moneda
+  </a>
+
 </nav>
 
-<!-- Aquí se renderizan los componentes según la ruta -->
 <router-outlet></router-outlet>

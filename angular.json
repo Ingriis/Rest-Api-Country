@@ -2,13 +2,9 @@
   "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
   "version": 1,
   "cli": {
-    "packageManager": "npm",
-<<<<<<< HEAD
-    "analytics": false
-=======
-    "analytics": "38f73dd7-9bfb-480b-b7ae-5777190b5a79"
->>>>>>> ee6dd31989e21d4cfee18014d77167da092e829b
-  },
+  "packageManager": "npm",
+  "analytics": "38f73dd7-9bfb-480b-b7ae-5777190b5a79"
+},
   "newProjectRoot": "projects",
   "projects": {
     "explorador-paises": {
