@@ -1,0 +1,96 @@
+<div class="app">
+  <header>
+    <div class="logo">
+      <span class="emoji">💰</span>
+      <h1>Currency<span>Finder</span></h1>
+    </div>
+
+    <div class="search-box">
+      <input 
+        #moneda
+        type="text" 
+        placeholder="Moneda (ej: EUR, USD, MXN)..."
+        (keydown.enter)="buscarPorMoneda(moneda.value)">
+      
+      <button (click)="buscarPorMoneda(moneda.value)" [disabled]="loading">
+        {{ loading ? 'Buscando...' : 'Explorar' }}
+      </button>
+    </div>
+  </header>
+
+  <main>
+    <!-- Mensaje de error -->
+    <div class="card-panel" *ngIf="error">
+      <div class="placeholder-text" style="color: #ff6b6b;">
+        {{ error }}
+      </div>
+    </div>
+
+    <!-- Lista de países (MÚLTIPLES, como en idioma) -->
+    <div class="card-panel" *ngIf="countries.length > 0 && !error; else placeholder">
+      <div 
+        *ngFor="let country of countries; let i = index" 
+        class="country-item"
+        [class.selected]="selectedCountry === country"
+        (click)="selectCountry(country)">
+        
+        <h2>{{ country.name.common }}</h2>
+        <p class="official-name">{{ country.name.official }}</p>
+
+        <img [src]="country.flags.svg" class="flag-img" *ngIf="country.flags?.svg">
+
+        <div class="info-grid">
+          <div class="info-item">
+            <label>CAPITAL</label>
+            <div>{{ country.capital?.[0] || 'N/A' }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>POBLACIÓN</label>
+            <div>{{ country.population | number }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>REGIÓN</label>
+            <div>{{ country.region }}</div>
+          </div>
+
+          <div class="info-item">
+            <label>MONEDA</label>
+            <div>{{ getCurrencyName(country) }}</div>
+          </div>
+        </div>
+
+        <hr *ngIf="i < countries.length - 1">
+      </div>
+    </div>
+
+    <ng-template #placeholder>
+      <div class="card-panel">
+        <div class="placeholder-text" *ngIf="!loading">
+          Ingresa un código de moneda (ej: EUR, USD) para buscar países
+        </div>
+        <div class="placeholder-text" *ngIf="loading">
+          Buscando...
+        </div>
+      </div>
+    </ng-template>
+
+    <!-- Panel JSON (PAÍS SELECCIONADO, como en idioma) -->
+    <div class="json-panel" *ngIf="selectedCountry">
+      <div class="panel-header">
+        <h3>Raw Data - {{ selectedCountry.name.common }}</h3>
+        <span class="status-dot"></span>
+      </div>
+      <pre>{{ selectedCountry | json }}</pre>
+    </div>
+
+    <div class="json-panel" *ngIf="countries.length > 0 && !selectedCountry">
+      <div class="panel-header">
+        <h3>Raw Data Object</h3>
+        <span class="status-dot"></span>
+      </div>
+      <pre>Selecciona un país para ver sus datos</pre>
+    </div>
+  </main>
+</div>

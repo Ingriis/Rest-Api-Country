@@ -20,4 +20,8 @@ export class CountryService {
   getCountriesByLanguage(language: string) {
     return this.http.get<any>(`${this.apiUrl}/lang/${language}`);
   }
+// Obtiene países por moneda
+  getCountriesByCurrency(currency: string) {
+    return this.http.get<any>(`${this.apiUrl}/currency/${currency}`); 
+  }
 }
