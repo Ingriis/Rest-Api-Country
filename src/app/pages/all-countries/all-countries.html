@@ -1,0 +1,30 @@
+<div class="app">
+  <h2 class="title">Lista de todos los países</h2>
+
+  <div *ngFor="let letter of availableLetters">
+    <h2 class="letter-title" [id]="letter">
+      {{ letter }}
+    </h2>
+
+    <div class="countries-container">
+      <div class="card" *ngFor="let country of groupedCountries[letter]">
+        <img [src]="country.flags.png" [alt]="country.name.common" class="flag" />
+        <h3>{{ country.name.common }}</h3>
+        <p><strong>Capital:</strong> {{ country.capital?.[0] || 'N/A' }}</p>
+        <p><strong>Región:</strong> {{ country.region }}</p>
+        <p><strong>Población:</strong> {{ country.population | number }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<button class="sidebar-toggle" (click)="toggleSidebar()">☰</button>
+
+<div class="alphabet-sidebar" [class.open]="sidebarOpen">
+  <span 
+    *ngFor="let letter of availableLetters"
+    (click)="scrollToLetter(letter)"
+  >
+    {{ letter }}
+  </span>
+</div>
